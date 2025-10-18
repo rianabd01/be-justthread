@@ -18,8 +18,8 @@ namespace be_justthread.Controllers
         }
 
         // Development-only endpoint to initialize the DB (creates threads table and seeds sample rows)
-        [HttpPost("init-db")]
-        public IActionResult InitDb()
+        [HttpPost("seed")]
+        public IActionResult SeedDb()
         {
             if (!_env.IsDevelopment() && _config["Admin:AllowInit"] != "true")
                 return Forbid();
@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS threads (
                 }
             }
 
-            return Ok(new { status = "initialized" });
+            return Ok(new { status = "seed success" });
         }
     }
 }

@@ -4,12 +4,12 @@ namespace be_justthread.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class HelloController : ControllerBase
+    public class HealthController : ControllerBase
     {
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok("Halo dari .NET!");
+            return Ok("JustThread is healthy!");
         }
     }
 }
