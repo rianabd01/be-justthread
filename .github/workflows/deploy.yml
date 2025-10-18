@@ -29,25 +29,18 @@ jobs:
 
       - name: Deploy to deploy branch (incremental)
         run: |
-          # Simpan hasil publish
-          mkdir ../deploy-temp
-          cp -r ./publish/* ../deploy-temp/
+          mkdir ..\deploy-temp
+          Copy-Item -Recurse -Path .\publish\* -Destination ..\deploy-temp\
           cd ..
-
-          # Clone branch deploy
           git clone --depth=1 --branch=deploy https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git deploy
           cd deploy
-
-          # Copy hasil build ke repo deploy
-          cp -r ../deploy-temp/* .
-
-          # Commit hanya perubahan
+          Copy-Item -Recurse -Force ..\deploy-temp\* .
           git config user.name "rianabd01"
           git config user.email "rianwahyuabd@gmail.com"
           git add .
-          if git diff-index --quiet HEAD; then
-            echo "No changes to deploy"
-          else
-            git commit -m "Update deploy $(date)"
+          if ((git diff-index --quiet HEAD) -eq $false) {
+            git commit -m "Update deploy $(Get-Date)"
             git push origin deploy
-          fi
+          } else {
+            echo "No changes to deploy"
+          }
