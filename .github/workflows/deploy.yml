@@ -27,13 +27,27 @@ jobs:
       - name: Publish app
         run: dotnet publish -c Release -o ./publish
 
-      - name: Deploy to deploy branch
+      - name: Deploy to deploy branch (incremental)
         run: |
-          cd publish
-          git init
+          # Simpan hasil publish
+          mkdir ../deploy-temp
+          cp -r ./publish/* ../deploy-temp/
+          cd ..
+
+          # Clone branch deploy
+          git clone --depth=1 --branch=deploy https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git deploy
+          cd deploy
+
+          # Copy hasil build ke repo deploy
+          cp -r ../deploy-temp/* .
+
+          # Commit hanya perubahan
           git config user.name "rianabd01"
           git config user.email "rianwahyuabd@gmail.com"
           git add .
-          git commit -m "Deploy $(date)"
-          git branch -M deploy
-          git push -f https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git deploy
+          if git diff-index --quiet HEAD; then
+            echo "No changes to deploy"
+          else
+            git commit -m "Update deploy $(date)"
+            git push origin deploy
+          fi
