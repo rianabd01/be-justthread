@@ -1,0 +1,108 @@
+## Build results
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+
+# Rider / VSCode / Visual Studio temp
+.idea/
+.vscode/
+.vs/
+
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# .NET Core generated files
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Auto-generated files
+Generated_Code/
+GeneratedFiles/
+
+# ASP.NET scaffolding
+ScaffoldingReadMe.txt
+
+# Publish output
+**/wwwroot/
+**/app.publish/
+*.Publish.xml
+*.pubxml
+*.publishproj
+
+# NuGet packages
+*.nupkg
+*.snupkg
+**/packages/*
+!**/packages/build/
+!**/packages/repositories.config
+.nuget/
+
+# Azure Web Apps
+PublishProfiles/
+
+# Logs and dumps
+*.log
+*.tlog
+*.vspscc
+*.vssscc
+*.pidb
+*.scc
+*.svclog
+*.userprefs
+*.dbmdl
+*.bak
+*.backup
+*.dmp
+
+# Database files
+*.mdf
+*.ldf
+*.ndf
+*.db
+*.sqlite
+*.sqlite3
+
+# Test results
+TestResults/
+*.VisualState.xml
+*.coverage
+*.coveragexml
+*.testsettings
+*.trx
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Resharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+
+# JetBrains Rider
+.idea/
+
+# Tye
+.tye/
+
+# Local environment settings
+.env
+.env.*
+secrets.json
+appsettings.Development.json
+
+# Docker
+**/docker-compose.override.yml
+**/docker-compose*.yml
+**/Dockerfile*
+**/obj/Docker/
