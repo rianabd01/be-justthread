@@ -1,9 +1,12 @@
-name: justthread_deploy
+name: Build and Push Deploy Branch
 
 on:
   push:
     branches:
       - main
+
+permissions:
+  contents: write
 
 jobs:
   build:
@@ -24,12 +27,6 @@ jobs:
       - name: Publish app
         run: dotnet publish -c Release -r win-x86 -o ./publish --self-contained false
 
-      - name: Prepare git for deploy
-        run: |
-          cd publish
-          touch .nojekyll
-          echo "publish/*" >> ../.gitignore || true
-
       - name: Deploy to deploy branch
         run: |
           cd publish
@@ -39,4 +36,4 @@ jobs:
           git add .
           git commit -m "Deploy $(date)"
           git branch -M deploy
-          git push -f https://x-access-token:${{ secrets.TOKEN }}@github.com/rianabd01/be-justthread.git deploy
+          git push -f https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git deploy
