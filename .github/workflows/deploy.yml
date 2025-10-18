@@ -47,8 +47,9 @@ jobs:
 
           git add -A
           git diff --quiet HEAD -- || (
-            $timestamp = Get-Date -Format 'yyyy-MM-dd HH:mm:ss'
-            git commit -m "Update deploy $timestamp"
+            $timestamp = (Get-Date).ToString("yyyy-MM-dd HH:mm:ss")
+            $message = "Update deploy $timestamp"
+            git commit -m "$message"
             git push origin deploy
             Write-Host "✅ Changes detected and deployed."
             exit 0
