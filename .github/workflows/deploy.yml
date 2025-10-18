@@ -24,13 +24,19 @@ jobs:
       - name: Publish project
         run: dotnet publish -c Release -r win-x86 -o ./publish --self-contained false
 
-      - name: Upload files via SFTP
-        uses: appleboy/scp-action@v0.1.7
+      - name: Deploy via FTP (Passive)
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          host: ${{ secrets.FTP_SERVER }}
+          server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          port: 22
-          source: "./publish/*"
-          target: "/wwwroot/"
-          overwrite: true
+          protocol: ftp
+          port: 21
+          local-dir: ./publish/
+          server-dir: /wwwroot/
+          security: loose
+          timeout: 120000
+          exclude: |
+            **/.git*
+            **/.github*
+            **/.vscode*
