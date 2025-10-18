@@ -47,7 +47,8 @@ jobs:
 
           git add -A
           git diff --quiet HEAD -- || (
-            git commit -m 'Update deploy ' + (Get-Date -Format "yyyy-MM-dd HH:mm:ss")
+            $timestamp = Get-Date -Format 'yyyy-MM-dd HH:mm:ss'
+            git commit -m "Update deploy $timestamp"
             git push origin deploy
             Write-Host "✅ Changes detected and deployed."
             exit 0
