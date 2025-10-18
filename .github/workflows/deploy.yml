@@ -1,4 +1,4 @@
-name: Build and Deploy to MonsterASP
+name: JustThread Deploy
 
 on:
   push:
@@ -6,11 +6,11 @@ on:
       - main
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: windows-latest
 
     steps:
-      - name: Checkout source
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup .NET
@@ -21,19 +21,16 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
 
-      - name: Build and publish
+      - name: Publish project
         run: dotnet publish -c Release -r win-x86 -o ./publish --self-contained false
 
-      - name: Deploy via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      - name: Upload files via SFTP
+        uses: appleboy/scp-action@v0.1.7
         with:
-          server: ${{ secrets.FTP_SERVER }}
+          host: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          port: ${{ secrets.FTP_PORT }}
-          local-dir: ./publish/
-          server-dir: wwwroot/
-          passive: true
-          protocol: ftps
-          timeout: 60000
-          dangerous-clean-slate: false
+          port: 22
+          source: "./publish/*"
+          target: "/wwwroot/"
+          overwrite: true
