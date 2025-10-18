@@ -1,4 +1,4 @@
-name: JustThread Deploy
+name: justthread_deploy
 
 on:
   push:
@@ -6,11 +6,11 @@ on:
       - main
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout source code
         uses: actions/checkout@v4
 
       - name: Setup .NET
@@ -21,22 +21,22 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
 
-      - name: Publish project
+      - name: Publish app
         run: dotnet publish -c Release -r win-x86 -o ./publish --self-contained false
 
-      - name: Deploy via FTP (Passive)
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          protocol: ftp
-          port: 21
-          local-dir: ./publish/
-          server-dir: /wwwroot/
-          security: loose
-          timeout: 120000
-          exclude: |
-            **/.git*
-            **/.github*
-            **/.vscode*
+      - name: Prepare git for deploy
+        run: |
+          cd publish
+          touch .nojekyll
+          echo "publish/*" >> ../.gitignore || true
+
+      - name: Deploy to deploy branch
+        run: |
+          cd publish
+          git init
+          git config user.name "rianabd01"
+          git config user.email "rianwahyuabd@gmail.com"
+          git add .
+          git commit -m "Deploy $(date)"
+          git branch -M deploy
+          git push -f https://x-access-token:${{ secrets.TOKEN }}@github.com/rianabd01/be-justthread.git deploy
