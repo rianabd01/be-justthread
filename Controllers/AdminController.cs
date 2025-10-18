@@ -5,7 +5,7 @@ using Npgsql;
 namespace be_justthread.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     public class AdminController : ControllerBase
     {
         private readonly IConfiguration _config;

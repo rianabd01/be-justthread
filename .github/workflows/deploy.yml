@@ -47,13 +47,8 @@ jobs:
 
           git add -A
 
-          if (git diff --quiet HEAD --) {
-            Write-Host "ℹ️ No changes to deploy."
-            exit 0
-          }
-          else {
-            git commit -m "Update deploy"
-            git push origin deploy
-            Write-Host "✅ Changes detected and deployed."
-            exit 0
-          }
+
+          git commit -m "Update deploy"
+          git push origin deploy
+          Write-Host "✅ deployed."
+          exit 0

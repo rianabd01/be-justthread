@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace be_justthread.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     public class HealthController : ControllerBase
     {
         [HttpGet]
