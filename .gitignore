@@ -101,8 +101,5 @@ _ReSharper*/
 secrets.json
 appsettings.Development.json
 
-# Docker
-**/docker-compose.override.yml
-**/docker-compose*.yml
-**/Dockerfile*
+# Docker build artifacts (keep the main Dockerfile)
 **/obj/Docker/
