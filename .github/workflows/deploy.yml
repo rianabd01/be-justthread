@@ -36,4 +36,4 @@ jobs:
           passive: true
           protocol: ftps
           timeout: 60000
-          dangerous-clean-slate: true
+          dangerous-clean-slate: false
