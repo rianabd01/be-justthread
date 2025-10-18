@@ -32,7 +32,8 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           port: ${{ secrets.FTP_PORT }}
           local-dir: ./publish/
-          server-dir: /wwwroot/
+          server-dir: wwwroot/
+          passive: true
           protocol: ftp
           timeout: 60000
           dangerous-clean-slate: true
