@@ -24,23 +24,34 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
 
-      - name: Publish app
-        run: dotnet publish -c Release -o ./publish
+      - name: Clean and Publish app
+        run: |
+          dotnet clean
+          dotnet publish -c Release -o ./publish
 
       - name: Deploy to deploy branch (incremental)
+        shell: pwsh
         run: |
-          mkdir ..\deploy-temp
-          Copy-Item -Recurse -Path .\publish\* -Destination ..\deploy-temp\
+          New-Item -ItemType Directory -Force -Path ..\deploy-temp | Out-Null
+          Copy-Item -Recurse -Force .\publish\* ..\deploy-temp\
+
           cd ..
+          if (Test-Path .\deploy) { Remove-Item -Recurse -Force .\deploy }
           git clone --depth=1 --branch=deploy https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git deploy
           cd deploy
+
           Copy-Item -Recurse -Force ..\deploy-temp\* .
+
           git config user.name "rianabd01"
           git config user.email "rianwahyuabd@gmail.com"
-          git add .
-          if ((git diff-index --quiet HEAD) -eq $false) {
-            git commit -m "Update deploy $(Get-Date)"
+
+          git add -A
+          git diff --quiet HEAD -- || (
+            git commit -m "Update deploy $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
             git push origin deploy
-          } else {
-            echo "No changes to deploy"
-          }
+            Write-Host "✅ Changes detected and deployed."
+            exit 0
+          )
+
+          Write-Host "ℹ️ No changes to deploy."
+          exit 0
